@@ -18,7 +18,7 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
-const globeTexture = new THREE.TextureLoader().load('globe.jpg');
+const globeTexture = new THREE.TextureLoader().load('./globe.jpg');
 
 const geometry = new THREE.SphereGeometry(3, 32, 32);
 const material = new THREE.MeshStandardMaterial({ map: globeTexture });
@@ -57,7 +57,7 @@ Array(200).fill().forEach(addStar);
 const loader = new THREE.CubeTextureLoader();
 loader.setPath('');
 
-const spaceTexture = loader.load(['space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg']);
+const spaceTexture = loader.load(['./space1.jpg', './space1.jpg', './space1.jpg', './space1.jpg', './space1.jpg', './space1.jpg']);
 scene.background = spaceTexture;
 
 function animate() {
