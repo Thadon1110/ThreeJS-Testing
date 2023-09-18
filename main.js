@@ -18,11 +18,13 @@ camera.position.setZ(30);
 
 renderer.render(scene, camera);
 
-const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({ color: 0xff6347 });
-const torus = new THREE.Mesh(geometry, material);
+const globeTexture = new THREE.TextureLoader().load('globe.jpg');
 
-scene.add(torus);
+const geometry = new THREE.SphereGeometry(3, 32, 32);
+const material = new THREE.MeshStandardMaterial({ map: globeTexture });
+const globe = new THREE.Mesh(geometry, material);
+
+scene.add(globe);
 
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(5, 5, 5);
@@ -30,18 +32,40 @@ pointLight.position.set(5, 5, 5);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
-const lightHelper = new THREE.PointLightHelper(pointLight);
-const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(lightHelper, gridHelper);
+// const lightHelper = new THREE.PointLightHelper(pointLight);
+// const gridHelper = new THREE.GridHelper(200, 50);
+// scene.add(lightHelper, gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+
+function addStar() {
+	const geometry = new THREE.SphereGeometry(0.25, 24, 24);
+	const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+	const star = new THREE.Mesh(geometry, material);
+
+	const [x, y, z] = Array(3)
+		.fill()
+		.map(() => THREE.MathUtils.randFloatSpread(100));
+
+	star.position.set(x, y, z);
+	scene.add(star);
+}
+
+Array(200).fill().forEach(addStar);
+
+// const spaceTexture = new THREE.TextureLoader().load('space1.jpg');
+const loader = new THREE.CubeTextureLoader();
+loader.setPath('');
+
+const spaceTexture = loader.load(['space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg', 'space1.jpg']);
+scene.background = spaceTexture;
 
 function animate() {
 	requestAnimationFrame(animate);
 
-	torus.rotation.x += 0.01;
-	torus.rotation.y += 0.01;
-	torus.rotation.z += 0.01;
+	// globe.rotation.x += 0.01;
+	globe.rotation.y += 0.001;
+	// globe.rotation.z += 0.001;
 
 	controls.update();
 
